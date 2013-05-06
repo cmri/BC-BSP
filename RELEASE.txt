@@ -1,0 +1,31 @@
+BC-BSP Release Note
+
+Release 1.0 - 2012-12-03
+
+1. INTRODUCTION
+
+   BC-BSP is a BSP(Bulk Synchronous Parallel)-based framework to process massive data by iterative computations, such as graph and machine learning algorithms. Now, many open-source platforms have been developed to support iterative algorithms, such as Hadoop, Hama and Giraph. However, some of them are inefficient and inflexible for iterative computing restricted by the processing frameworks, and others' data processing capacity is limited on a given cluster since they assume that data is resident in memory. BC-BSP is designed and developed by considering features of Pregel, Hama, Giraph and Hadoop.
+
+2. FEATURES
+
+   Compared with MapReduce-based Hadoop and existing open-source BSP-based platforms(Hama and Giraph), BC-BSP has the following significant features:
+   
+   (1)Supports many data-access iterfaces, such as HDFS(Hadoop Distributed File System) and HBase, and users can define their InputFormat and OutputFormat for special applications.
+   (2)Designs basic hash and balance hash methods to partition source data into tasks. Also, users can define their special hash methods by implementing the data partitioning interface.
+   (3)Schedules and assigns tasks by considering the rules of data location and load balance.
+   (4)Enables to spill data(including static data and dynamical data) on the local disk to improve the data processing capacity when the cluster scale is limited.
+   (5)Adopts ActiveMQ to manage and tranfer messages.
+   (6)Implements the two-level synchronization mechanism.
+   (7)Provides a checkpoint mechanism for the fault tolerance.
+
+3. OVERALL FRAMEWORKS
+
+   BC-BSP works in the master-slave mode and it consists of the following main components:
+   
+   (1)Client End: The client end splits the input data, adjusts the number of partitions, acquires a unique job ID from the BSPController component and reports the running progress of the submitted job.
+   (2)BSPController: It is the controller process which runs on the master node and manages the registration of WorkerManagers in the computing cluster. It collects the information of heartbeats, detects the faults, and acts as a control center of the fault-recovery. Also, it is reponsible for scheduling tasks, aggregation operations and the synchronization control of one job on the job level. Client end can obtain the cluster status information from the BSPController.
+   (3)WorkerManager: This process runs on the slave node and manages local tasks, local aggregation and local synchronization control.
+   (4)Staff: It is the entity that runs the user-defined compute() function. It also collects the basic aggregation information. It spills the static data(e.g., the topology of a graph) into the local disk and organizes them by a hash index policy.
+   (5)Global Synchronizer: It manages the global synchronization among all staffs belonging to the same job between the two consecutive iterations. The process is composed of two stages: local synchronization for staffs on the same WorkerManager(WorkerManager controls), global synchronization for WorkerManagers who run tasks of this job(BSPController controls). During the synchronization, the aggregation can be completed by invoking the user-defined aggregation function.
+   (6)Message Communicator: This is responsible for sending and receiving messages. The overflow received messages can be spilled on the local disk. Now, BC-BSP implements Message Communicator by ActiveMQ middleware.
+   (7)Fault-Tolerance: BSPController detects faults by heartbeat information, commands staffs to backup the snapshots and recovers the fault job.

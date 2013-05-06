@@ -1,0 +1,89 @@
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs
+END
+bcel.jar
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/bcel.jar
+END
+findbugsGUI.jar
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/findbugsGUI.jar
+END
+jsr305.jar
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/jsr305.jar
+END
+asm-commons-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/asm-commons-3.0.jar
+END
+asm-util-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/asm-util-3.0.jar
+END
+asm-tree-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/asm-tree-3.0.jar
+END
+asm-xml-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/asm-xml-3.0.jar
+END
+annotations.jar
+K 25
+svn:wc:ra_dav:version-url
+V 70
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/annotations.jar
+END
+buggy.icns
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/buggy.icns
+END
+dom4j-full.jar
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/dom4j-full.jar
+END
+asm-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/asm-3.0.jar
+END
+asm-analysis-3.0.jar
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/asm-analysis-3.0.jar
+END
+findbugs-ant.jar
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/findbugs-ant.jar
+END
+ant.jar
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/lib/findbugs/ant.jar
+END

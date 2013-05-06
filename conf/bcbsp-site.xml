@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+/**
+ *
+ * changed by WangZhigang at 2011-11-21
+ * 
+ */
+-->
+<configuration>
+  <property>
+    <name>bcbsp.controller.address</name>
+    <value>master:40000</value>
+    <description>
+                 The address of the bcbsp controller server. Either the
+                 literal string "local" or a host:port for distributed mode
+    </description>
+  </property>
+
+  <property>
+    <name>bcbsp.workermanager.staff.max</name>
+     <value>2</value>
+    <description>The max number of staffs running on one worker manager.</description>
+  </property>
+
+  <property>
+    <name>bcbsp.workermanager.rpc.port</name>
+     <value>50000</value>
+    <description>The port an worker manager server binds to.</description>
+  </property>
+
+  <property>
+    <name>bcbsp.workermanager.report.address</name>
+    <value>127.0.0.1:0</value>
+    <description>The interface and port that groom server listens on. 
+                 Since it is only connected to by the tasks, it uses the local interface.
+                 EXPERT ONLY. Should only be changed if your host does not have the loopback interface.
+    </description>
+  </property>
+
+  <property>
+    <name>bcbsp.workeragent.port</name>
+     <value>61000</value>
+    <description>The port an worker agent server binds to.</description>
+  </property>
+  
+  <property>
+    <name>fs.default.name</name>
+    <value>hdfs://master:9000/</value>
+    <description>
+                 The name of the default file system. Either the literal string
+                 "local" or a host:port for HDFS.
+    </description>
+  </property>
+
+  <property>
+    <name>bcbsp.share.dir</name>
+    <value>${hadoop.tmp.dir}/bcbsp/share</value>
+    <description>The shared directory where BSP stores control files.</description>
+  </property>
+
+  <property>
+    <name>bcbsp.local.dir</name>
+    <value>/tmp/bcbsp/local</value>
+    <description> local directory for temporal store</description> 
+  </property>
+  
+  <property>
+    <name>bcbsp.zookeeper.quorum</name>
+    <value>slave1</value>
+    <description>
+                 Comma separated list of servers in the ZooKeeper Quorum.
+                 For example, "hostName1,hostName2".
+    </description>
+  </property>
+
+  <property>
+    <name>bcbsp.zookeeper.clientPort</name>
+    <value>2181</value>
+    <description>
+                 Property from ZooKeeper's config zoo.cfg.
+                 The port at which the clients will connect.
+    </description>
+  </property>
+  
+  <property>
+    <name>bcbsp.heartbeat.interval</name>
+    <value>1000</value>
+    <description>The interval of heart beat in millsecond.</description>
+  </property>
+
+  <property>
+    <name>bcbsp.heartbeat.timeout</name>
+    <value>30000</value>
+    <description>The threshold of time out for heart beat in millsecond.</description>
+  </property>
+
+  <property>
+    <name>bcbsp.checkpoint.frequency</name>
+    <value>5</value>
+    <description>
+                 The default frequency of checkpoint.
+                 For a certain job, users can define the special frequency.
+                 If the value is 0, that means this function is disabled.
+    </description>
+  </property>
+
+  <property>
+    <name>bcbsp.checkpoint.dir</name>
+    <value>${hadoop.tmp.dir}/bcbsp/checkpoint</value>
+    <description>The directory used for checkpoint.</description>
+  </property>
+
+  <property>
+    <name>bcbsp.recovery.attempt.max</name>
+    <value>4</value>
+    <description>
+                 If a job is fault, the cluster will attempt to recovery it.
+                 However, if the number of attempt is up to the threshold,
+                 then stop attempting to recovery it and fail it.
+    </description>
+  </property>
+
+  <property>
+    <name>bcbsp.max.faied.job.worker</name>
+    <value>5</value>
+    <description>The maximum of failed job on one worker.</description>
+  </property>
+
+  <property>
+    <name>bcbsp.worker.sleep.timeout</name>
+    <value>60000</value>
+    <description>The maximum of sleeping time for the gray worker</description>
+  </property>
+
+  <property>
+    <name>bsp.child.java.opts</name>
+    <value>-Xmx1024m</value>
+    <description>Java opts for the worker server child processes.</description>
+  </property>
+
+  <property>
+    <name>bsp.http.infoserver.port</name>
+    <value>40026</value>
+    <description>HTTP server port.</description>
+  </property>
+
+  <property>
+    <name>bsp.http.infoserver.webapps</name>
+    <value>/home/bc-bsp-1.0/webapps</value>
+    <description>Path of web pages.</description>
+  </property>
+  <property>
+    <name>bcbsp.log.dir</name>
+    <value>/home/bc-bsp-1.0/logs</value>
+    <description>Path of logs.</description>
+  </property>
+
+</configuration>

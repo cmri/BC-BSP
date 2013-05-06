@@ -1,0 +1,5 @@
+BC-BSP
+Copyright 2012-2014 The China Mobile Big Cloud Community
+
+This product includes software developed at
+The China Mobile Big Cloud Community (http://labs.chinamobile.com/show/cloud).

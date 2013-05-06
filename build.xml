@@ -1,0 +1,213 @@
+<?xml version="1.0"?>
+
+<project name="bcbsp" default="jar">
+	<property name="version" value="1.0" />
+	<property name="Name" value="bcbsp" />
+	<property name="final.name" value="bcbsp-${version}" />
+	<property name="year" value="20121204" />
+
+
+	<!-- Load all the default properties, and any the user wants    -->
+	<!-- to contribute (without having to type -D or edit this file -->
+	<property file="${user.home}/${name}.build.properties" />
+	<property file="${basedir}/build.properties" />
+
+	<property name="src.dir" location="${basedir}/src/java" />
+
+	<property name="lib.dir" value="${basedir}/lib" />
+	<property name="conf.dir" value="${basedir}/conf" />
+	<property name="docs.dir" value="${basedir}/docs" />
+	<property name="docs.src" value="${basedir}/src/docs" />
+
+	<!-- build properties -->
+
+	<property name="test.output" value="no" />
+	<property name="test.timeout" value="600000" />
+
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="build.lib" location="${build.dir}/lib" />
+	<property name="build.classes" location="${build.dir}/classes" />
+	<property name="build.docs" value="${build.dir}/docs/site" />
+	<property name="build.encoding" value="ISO-8859-1" />
+	<property name="build.src" value="${build.dir}/src" />
+
+	<property name="build.report" value="${build.dir}/reports" />
+	<property name="build.report.findbugs" value="${build.report}/findbugs" />
+	<property name="build.report.tests" value="${build.report}/tests" />
+
+	<property name="test.build.dir" value="${build.dir}/test" />
+	<property name="test.junit.output.format" value="plain" />
+
+	<property name="dist.dir" value="${build.dir}/${final.name}" />
+
+	<property name="javac.deprecation" value="off" />
+	<property name="javac.debug" value="on" />
+
+	<fileset id="lib.jars" dir="${basedir}" includes="lib/*.jar" />
+	<path id="classpath">
+		<fileset refid="lib.jars" />
+		<fileset dir="${lib.dir}/findbugs/">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement location="${build.classes}" />
+		<pathelement location="${conf.dir}" />
+	</path>
+
+	<taskdef name="findbugs" classpathref="classpath" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+
+	<target name="init">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.classes}" />
+		<mkdir dir="${build.report.findbugs}" />
+		<mkdir dir="${build.report.tests}" />
+		<!--Copy bin, lib, and conf. too-->
+		<mkdir dir="${build.lib}" />
+		<copy todir="${build.lib}">
+			<fileset dir="${lib.dir}" />
+		</copy>
+		
+	    <tempfile property="touch.temp.file" destDir="${java.io.tmpdir}"/>
+	    <touch millis="0" file="${touch.temp.file}">
+	      <fileset dir="${conf.dir}" includes="**/*.template"/>
+	    </touch>
+	    <delete file="${touch.temp.file}"/>
+
+	    <copy todir="${conf.dir}" verbose="true">
+	      <fileset dir="${conf.dir}" includes="**/*.template"/>
+	      <mapper type="glob" from="*.template" to="*"/>
+	    </copy>
+
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Java Compiler Compiler, generate Parsers                           -->
+	<!-- ================================================================== -->
+
+	<target name="compile" depends="init">
+		<!--Compile whats under src and generated java classes made from jsp-->
+		<mkdir dir="${build.src}" />
+		<javac encoding="${build.encoding}" srcdir="${src.dir};${build.src}" includes="**/*.java" destdir="${build.classes}" debug="${javac.debug}" deprecation="${javac.deprecation}" includeantruntime="false">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<!-- Override jar target to specify main class -->
+	<target name="jar" depends="compile">
+		<jar jarfile="${build.dir}/${final.name}.jar" basedir="${build.classes}">
+		</jar>
+	</target>
+
+
+	<target name="package" depends="jar" description="Build distribution">
+		<mkdir dir="${dist.dir}" />
+	    <mkdir dir="${dist.dir}/lib"/>
+	    <mkdir dir="${dist.dir}/bin"/>
+	    <mkdir dir="${dist.dir}/docs"/>
+	    <mkdir dir="${dist.dir}/docs/api"/>
+		
+		<copy todir="${dist.dir}" includeEmptyDirs="false" flatten="true">
+			<fileset dir="${build.dir}">
+				<include name="${final.name}.jar" />
+			</fileset>
+		</copy>
+		
+	    <copy todir="${dist.dir}/bin">
+	      <fileset dir="bin"/>
+	    </copy>
+		
+	    <copy todir="${dist.dir}/conf">
+	      <fileset dir="${conf.dir}" excludes="**/*.template"/>
+	    </copy>
+		
+		<copy todir="${dist.dir}/lib">
+			<fileset dir="${build.lib}" />
+		</copy>
+		
+	    <copy todir="${dist.dir}/docs">
+	      <fileset dir="${build.docs}"/>
+	    </copy>
+		
+		<copy todir="${dist.dir}">
+			<fileset dir=".">
+				<include name="*.txt" />
+			</fileset>
+		</copy>
+	    <copy todir="${dist.dir}/" file="build.xml"/>
+		<copy todir="${dist.dir}/" file="pom.xml"/>
+		
+		<mkdir dir="${dist.dir}/src" />
+		<copy todir="${dist.dir}/src" includeEmptyDirs="true">
+			<fileset dir="src" excludes="**/*.template **/docs/build/**/*" />
+		</copy>
+		
+		
+	    <chmod perm="ugo+x" type="file" parallel="false">
+	        <fileset dir="${dist.dir}/bin"/>
+	    </chmod>
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Make release tarball                                               -->
+	<!-- ================================================================== -->
+	<macrodef name="macro_tar" description="Worker Macro for tar">
+		<attribute name="param.destfile" />
+		<element name="param.listofitems" />
+		<sequential>
+			<tar compression="gzip" longfile="gnu" destfile="@{param.destfile}">
+				<param.listofitems />
+			</tar>
+		</sequential>
+	</macrodef>
+	<target name="tar" depends="package" description="Make release tarball">
+		<macro_tar param.destfile="${build.dir}/${final.name}.tar.gz">
+			<param.listofitems>
+				<tarfileset dir="${build.dir}" mode="664">
+					<exclude name="${final.name}/bin/*" />
+					<include name="${final.name}/**" />
+				</tarfileset>
+				<tarfileset dir="${build.dir}" mode="755">
+					<include name="${final.name}/bin/*" />
+				</tarfileset>
+			</param.listofitems>
+		</macro_tar>
+	</target>
+
+	<target name="binary" depends="package" description="Make tarball without source and documentation">
+		<macro_tar param.destfile="${build.dir}/${final.name}-bin.tar.gz">
+			<param.listofitems>
+				<tarfileset dir="${build.dir}" mode="664">
+					<exclude name="${final.name}/bin/*" />
+					<exclude name="${final.name}/src/**" />
+					<exclude name="${final.name}/docs/**" />
+					<include name="${final.name}/**" />
+				</tarfileset>
+				<tarfileset dir="${build.dir}" mode="755">
+					<include name="${final.name}/bin/*" />
+				</tarfileset>
+			</param.listofitems>
+		</macro_tar>
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Doc                                                                -->
+	<!-- ================================================================== -->
+	<target name="docs" depends="forrest.check" description="Generate forrest-based documentation. To use, specify -Dforrest.home=&lt; on the command line." if="forrest.home">
+		<exec dir="${docs.src}" executable="${forrest.home}/bin/forrest" failonerror="true">
+		</exec>
+		<copy todir="${build.docs}">
+			<fileset dir="${docs.src}/build/site/" />
+		</copy>
+		<delete dir="${docs.src}/build/" />
+	</target>
+
+	<target name="forrest.check" unless="forrest.home">
+		<fail message="'forrest.home' is not defined. Please pass -Dforrest.home=&lt; to Ant on the command-line." />
+	</target>
+
+	<!-- ================================================================== -->
+	<!-- Clean.  Delete the build files, and their directories              -->
+	<!-- ================================================================== -->
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+</project>

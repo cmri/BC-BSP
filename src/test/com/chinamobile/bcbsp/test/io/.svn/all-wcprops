@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/io
+END
+KeyValueBSPFileInputFormatTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 116
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/io/KeyValueBSPFileInputFormatTest.java
+END
+TextBSPFileOutputFormatTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 113
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/io/TextBSPFileOutputFormatTest.java
+END

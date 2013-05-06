@@ -1,0 +1,238 @@
+Install and Use BC-BSP
+
+  BC-BSP runs in the master-slave mode. This document describes how to install, configure and manage BC-BSP in a cluster,
+and how to run the examples on BC-BSP.
+
+
+1.Requirements
+
+  The following software must have been installed on all nodes in the cluster:
+     (1)hadoop-0.20.2;
+     (2)Sun Java JDK 1.6.x or higher version;
+     (3)zookeeper-3.3.x or higher version(only install on part nodes);
+  
+  As an example, the cluster in this document is composed of three nodes:
+     (1)the master node: master, 192.168.0.100;
+     (2)the first worker node: slave1, 192.168.0.101;
+     (3)the second worker node: slave2, 192.168.0.102;
+  
+  BC-BSP and hadoop-0.20.2 are installed on the three nodes, Zookeeper is only installed on slave1.
+  
+  How to install Hadoop and ZooKeeper, please click http://hadoop.apache.org/ and http://zookeeper.apache.org/.
+
+
+2.Configure BC-BSP
+  
+  Three configuration files in $BCBSP_HOME/conf need to be changed.
+  Here gives the examples of them (assume that BC-BSP is installed in /home):
+
+  (1)bcbsp-evn.sh
+     export JAVA_HOME=/usr/java/jdk1.6.0_23
+
+  (2)workermanager
+     slave1
+     slave2
+  
+  (3)bcbsp-site.xml
+     <?xml version="1.0"?>
+     <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+    
+     <configuration>
+       <property>
+         <name>bcbsp.controller.address</name>
+         <value>LENOVO:40000</value>
+         <description>
+                 The address of the bcbsp controller server. Either the
+                 literal string "local" or a host:port for distributed mode
+         </description>
+       </property>
+
+       <property>
+         <name>bcbsp.workermanager.staff.max</name>
+          <value>2</value>
+         <description>The max number of staffs running on one worker manager.</description>
+       </property>
+
+       <property>
+         <name>bcbsp.workermanager.rpc.port</name>
+          <value>50000</value>
+         <description>The port an worker manager server binds to.</description>
+       </property>
+
+       <property>
+         <name>bcbsp.workermanager.report.address</name>
+         <value>127.0.0.1:0</value>
+         <description>The interface and port that groom server listens on. 
+                 Since it is only connected to by the tasks, it uses the local interface.
+                 EXPERT ONLY. Should only be changed if your host does not have the loopback interface.
+         </description>
+       </property>
+
+       <property>
+         <name>bcbsp.workeragent.port</name>
+          <value>61000</value>
+         <description>The port an worker agent server binds to.</description>
+       </property>
+  
+       <property>
+         <name>fs.default.name</name>
+         <value>hdfs://master:9000/</value>
+         <description>
+                 The name of the default file system. Either the literal string
+                 "local" or a host:port for HDFS.
+         </description>
+       </property>
+
+       <property>
+         <name>bcbsp.share.dir</name>
+         <value>${hadoop.tmp.dir}/bcbsp/share</value>
+         <description>The shared directory where BSP stores control files.</description>
+       </property>
+
+       <property>
+         <name>bcbsp.local.dir</name>
+         <value>/tmp/bcbsp/local</value>
+         <description> local directory for temporal store</description> 
+       </property>
+  
+       <property>
+         <name>bcbsp.zookeeper.quorum</name>
+         <value>slave1</value>
+         <description>
+                 Comma separated list of servers in the ZooKeeper Quorum.
+                 For example, "hostName1,hostName2".
+         </description>
+       </property>
+
+       <property>
+         <name>bcbsp.zookeeper.clientPort</name>
+         <value>2181</value>
+         <description>
+                 Property from ZooKeeper's config zoo.cfg.
+                 The port at which the clients will connect.
+         </description>
+       </property>
+  
+       <property>
+         <name>bcbsp.heartbeat.interval</name>
+         <value>1000</value>
+         <description>The interval of heart beat in millsecond.</description>
+       </property>
+
+       <property>
+         <name>bcbsp.heartbeat.timeout</name>
+         <value>30000</value>
+         <description>The threshold of time out for heart beat in millsecond.</description>
+       </property>
+
+       <property>
+         <name>bcbsp.checkpoint.frequency</name>
+         <value>5</value>
+         <description>
+                 The default frequency of checkpoint.
+                 For a certain job, users can define the special frequency.
+                 If the value is 0, that means this function is disabled.
+         </description>
+       </property>
+
+       <property>
+         <name>bcbsp.checkpoint.dir</name>
+         <value>${hadoop.tmp.dir}/bcbsp/checkpoint</value>
+         <description>The directory used for checkpoint.</description>
+       </property>
+
+       <property>
+         <name>bcbsp.recovery.attempt.max</name>
+         <value>4</value>
+         <description>
+                 If a job is fault, the cluster will attempt to recovery it.
+                 However, if the number of attempt is up to the threshold,
+                 then stop attempting to recovery it and fail it.
+         </description>
+       </property>
+
+       <property>
+         <name>bcbsp.max.faied.job.worker</name>
+         <value>5</value>
+         <description>The maximum of failed job on one worker.</description>
+       </property>
+
+       <property>
+         <name>bcbsp.worker.sleep.timeout</name>
+         <value>60000</value>
+         <description>The maximum of sleeping time for the gray worker</description>
+       </property>
+
+       <property>
+         <name>bsp.child.java.opts</name>
+         <value>-Xmx1024m</value>
+         <description>Java opts for the worker server child processes.</description>
+       </property>
+
+       <property>
+         <name>bsp.http.infoserver.port</name>
+         <value>40026</value>
+         <description>HTTP server port.</description>
+       </property>
+
+       <property>
+         <name>bsp.http.infoserver.webapps</name>
+         <value>/home/bc-bsp-1.0/webapps</value>
+         <description>Path of web pages.</description>
+       </property>
+       <property>
+         <name>bcbsp.log.dir</name>
+         <value>/home/bc-bsp-1.0/logs</value>
+         <description>Path of logs.</description>
+       </property>
+
+     </configuration>
+
+3.Manage the BC-BSP cluster
+
+  Before running the BC-BSP cluster, please startup HDFS and Zookeeper first by the following command:
+      % $HADOOP_HOME/bin/start-dfs.sh
+      % $ZOOKEEPER_INSTALL/bin/zkServer.sh start
+
+  Make sure that HDFS has left the safe mode, then run the command on the master node:
+      % $BCBSP_HOME/bin/start-bcbsp.sh
+      This will startup the BC-BSP cluster.
+  Run this command on the master node to close the cluster:
+      % $BCBSP_HOME/bin/stop-bcbsp.sh
+
+
+4.Execute Examples
+
+  Input the following command to run an example on BC-BSP:
+      % $BCBSP_HOME/bin/bcbsp jar bcbsp-examples.jar [args]
+
+  Now, there are three examples:
+    
+    (1)PageRank
+      % $BCBSP_HOME/bin/bcbsp jar bcbsp-examples.jar pagerank [SuperStepNumber] [InputPath] [OutputPath] [SplitSize] [PartitionNum] ...
+      The format of input data is: src_url_one:10.0[\t]dst_url_two:0[space]dst_url_three:0[space]...
+    
+    (2)Single Source Shortest Path
+      % $BCBSP_HOME/bin/bcbsp jar bcbsp-examples.jar sssp [SourceID] [SuperStepNumber] [InputPath] [OutputPath] [SplitSize] [PartitionNum] ...
+      The format of input data is: src_address_one:10[\t]dst_address_two:2[space]dst_address_three:3[space]...
+      where, 10 is a random integer, 2 and 3 are the weight of outgoing edges.
+    
+    (3)K-Means
+      % $BCBSP_HOME/bin/bcbsp jar bcbsp-examples.jar kmeans [SuperStepNumber] [InputPath] [OutputPath] [K] [K-Centers FilePath] [SplitSize] [PartitionNum] ...
+      where K is the number of dimensions, K-Centers FilePath is the local path of file which stores original K center points.
+      The format of input data is: one:one[\t]1:2.12[space]1:3.23[space]...
+      where one:one means that the record named "one" belongs to "two", 1 is an unused id, 2.12 and 3.23 are the value of different dimensions.
+
+
+5.Deploy Tool
+  
+  It is convenient to use the Deploy Tool to deploy BC-BSP over a large cluster.
+  The Deploy Tool is located in $BCBSP_HOME/deploy/. Double click bcbsp.sh, then a visualization window will appear.
+
+  Hadoop and BC-BSP can be deployed by this tool.
+  
+  Configuration files can be modified by "Set Conf: System, Hadoop, BCBSP".
+  For "System", it is the /etc/profile; for "Hadoop" and "BCBSP", they are the relative configuration files;
+  
+  WorkerServer List includes all nodes of HDFS and BC-BSP.
+  A node can be added or removed by "Add" and "Remove".

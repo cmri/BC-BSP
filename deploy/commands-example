@@ -1,0 +1,11 @@
+
+Execute commands examples:
+
+	rm -rf /tmp/bcbsp
+	rm -rf /home/bc-bsp-1.0/logs
+
+Copy commands examples:
+
+	scp /root/workspace3.3.2/bcbsp-examples.jar tihuan:/usr/lily/bc-bsp-0.1/
+	
+	*Note: "tihuan" is a string which will be replace by "User@IP" in the WorkerServer List. 

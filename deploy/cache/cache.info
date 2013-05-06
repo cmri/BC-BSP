@@ -1,0 +1,5 @@
+three-master-name	master	master	master
+BCBSP_HOME=	/home/bc-bsp-1.0
+HADOOP_HOME=	/home/hadoop-0.20.2
+slave1	192.168.56.101	root	123abcd?	2	/usr/java/jdk1.6.0_16
+slave2	192.168.56.102	root	123abcd?	2	/usr/java/jdk1.6.0_16

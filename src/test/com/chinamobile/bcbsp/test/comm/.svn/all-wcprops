@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm
+END
+MessageQueuesInterfaceOutMemTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm/MessageQueuesInterfaceOutMemTest.java
+END
+SenderAndReceiverTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm/SenderAndReceiverTest.java
+END
+BSPMessageTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm/BSPMessageTest.java
+END
+log4j.properties
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm/log4j.properties
+END
+CombinerToolTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm/CombinerToolTest.java
+END
+MessageQueuesInterfaceTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm/MessageQueuesInterfaceTest.java
+END
+ProducerToolAndConsumerToolTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/comm/ProducerToolAndConsumerToolTest.java
+END

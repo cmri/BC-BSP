@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/aggregate
+END
+ErrorSumAggregator.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/aggregate/ErrorSumAggregator.java
+END
+TestJobInProgress.java
+K 25
+svn:wc:ra_dav:version-url
+V 110
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/aggregate/TestJobInProgress.java
+END
+ErrorAggregateValue.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/aggregate/ErrorAggregateValue.java
+END

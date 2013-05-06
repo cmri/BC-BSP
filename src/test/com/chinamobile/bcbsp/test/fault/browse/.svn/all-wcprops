@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse
+END
+GetFileTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 107
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse/GetFileTest.java
+END
+BrowseTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse/BrowseTest.java
+END
+SortListTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 108
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse/SortListTest.java
+END
+MessageServiceTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse/MessageServiceTest.java
+END
+Number.java
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse/Number.java
+END
+ReadFaultlogTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse/ReadFaultlogTest.java
+END
+PageServiceTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/bcbsp/!svn/ver/87/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test/fault/browse/PageServiceTest.java
+END

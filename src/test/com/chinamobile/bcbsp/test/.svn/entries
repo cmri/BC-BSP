@@ -1,0 +1,169 @@
+10
+
+dir
+95
+http://221.183.16.9/svn/bcbsp/release/bc-bsp-1.0/src/test/com/chinamobile/bcbsp/test
+http://221.183.16.9/svn/bcbsp
+
+
+
+2012-12-06T02:13:30.569321Z
+87
+neusoftbsp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+a9455b7b-f016-4ffa-830e-6f8e1a51d2f6
+
+http
+dir
+
+BSPConfigurationSetter.java
+file
+
+
+
+
+2012-12-06T03:58:55.646109Z
+03c6e922ba0e364e71a62b569f526789
+2012-12-06T02:13:30.569321Z
+87
+neusoftbsp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3989
+
+aggregate
+dir
+
+bspcontroller
+dir
+
+comm
+dir
+
+mini
+dir
+
+TestUtil.java
+file
+
+
+
+
+2012-12-06T03:58:55.646109Z
+12d3199e1784d630d4ff8e60d7ad3fb0
+2012-12-06T02:13:30.569321Z
+87
+neusoftbsp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3863
+
+ActiveMQBrokerTest.java
+file
+
+
+
+
+2012-12-06T03:58:55.661709Z
+ad3ac2646737143c5c0cb2ba0955e7bc
+2012-12-06T02:13:30.569321Z
+87
+neusoftbsp
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+565
+
+graph
+dir
+
+workermanager
+dir
+
+io
+dir
+
+partition
+dir
+
+fault
+dir
+
+sync
+dir
+
+scheduler
+dir
+
+client
+dir
+

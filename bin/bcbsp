@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+
+# BC-BSP System
+# version 0.1
+
+# bcbsp-config.sh
+
+bin=`dirname "$0"`
+bin=`cd "$bin"; pwd`
+
+. "$bin"/bcbsp-config.sh
+
+cygwin=false
+case "`uname`" in
+CYGWIN*) cygwin=true;;
+esac
+
+# if no args specified, show usage
+if [ $# = 0 ]; then
+  echo "Usage: bcbsp [--config confdir] COMMAND"
+  echo "where COMMAND is one of:"
+  echo "  bspcontroller        run the BSPController node"
+  echo "  workermanager        run the WorkerManager node"
+  echo "  job                  manipulate BSP jobs"
+  echo "  jar <jar>            run a jar file"
+  echo " or"
+  echo "  CLASSNAME            run the class named CLASSNAME"
+  echo "Most commands print help when invoked w/o parameters."
+  exit 1
+fi
+if [ $1 = "help" -a $# = 1 ];then
+  echo "bcbsp help job         display job information"
+  echo "bcbsp help admin       display cluster information"
+  echo "bcbsp help jar         submit jar file"
+  exit 1
+fi
+
+# get arguments
+COMMAND=$1
+shift
+
+if [ -f "${BCBSP_CONF_DIR}/bcbsp-env.sh" ]; then
+  . "${BCBSP_CONF_DIR}/bcbsp-env.sh"
+fi
+
+# some Java parameters
+if [ "$JAVA_HOME" != "" ]; then
+  #echo "run java in $JAVA_HOME"
+  JAVA_HOME=$JAVA_HOME
+fi
+  
+if [ "$JAVA_HOME" = "" ]; then
+  echo "Error: JAVA_HOME is not set."
+  exit 1
+fi
+
+JAVA=$JAVA_HOME/bin/java
+JAVA_HEAP_MAX=-Xmx1000m 
+
+# check envvars which might override default args
+if [ "$BCBSP_HEAPSIZE" != "" ]; then
+  #echo "run with heapsize $BCBSP_HEAPSIZE"
+  JAVA_HEAP_MAX="-Xmx""$BCBSP_HEAPSIZE""m"
+  #echo $JAVA_HEAP_MAX
+fi
+
+# CLASSPATH initially contains $BCBSP_CONF_DIR
+CLASSPATH="${BCBSP_CONF_DIR}"
+CLASSPATH=${CLASSPATH}:$JAVA_HOME/lib/tools.jar
+
+# for developers, add Bcbsp classes to CLASSPATH
+if [ -d "$BCBSP_HOME/build/classes" ]; then
+  CLASSPATH=${CLASSPATH}:$BCBSP_HOME/build/classes
+fi
+if [ -d "$BCBSP_HOME/build/webapps" ]; then
+  CLASSPATH=${CLASSPATH}:$BCBSP_HOME/build
+fi
+if [ -d "$BCBSP_HOME/build/test/classes" ]; then
+  CLASSPATH=${CLASSPATH}:$BCBSP_HOME/build/test/classes
+fi
+
+# so that filenames w/ spaces are handled correctly in loops below
+IFS=
+
+# for releases, add core bcbsp jar & webapps to CLASSPATH
+if [ -d "$BCBSP_HOME/webapps" ]; then
+  CLASSPATH=${CLASSPATH}:$BCBSP_HOME
+fi
+for f in $BCBSP_HOME/bcbsp-**.jar; do
+  CLASSPATH=${CLASSPATH}:$f;
+done
+
+# add libs to CLASSPATH
+for f in $BCBSP_HOME/lib/*.jar; do
+  CLASSPATH=${CLASSPATH}:$f;
+done
+
+for f in $BCBSP_HOME/lib/jsp-2.1/*.jar; do
+  CLASSPATH=${CLASSPATH}:$f;
+done
+
+# add user-specified CLASSPATH last
+if [ "$BCBSP_CLASSPATH" != "" ]; then
+  CLASSPATH=${CLASSPATH}:${BCBSP_CLASSPATH}
+fi
+
+# default log directory & file
+if [ "$BCBSP_LOG_DIR" = "" ]; then
+  BCBSP_LOG_DIR="$BCBSP_HOME/logs"
+fi
+if [ "$BCBSP_LOGFILE" = "" ]; then
+  BCBSP_LOGFILE='bcbsp.log'
+fi
+
+# default policy file for service-level authorization
+if [ "$BCBSP_POLICYFILE" = "" ]; then
+  BCBSP_POLICYFILE="bcbsp-policy.xml"
+fi
+
+# restore ordinary behaviour
+unset IFS
+
+# figure out which class to run
+if [ "$COMMAND" = "bspcontroller" ] ; then
+  CLASS='com.chinamobile.bcbsp.BSPControllerRunner'
+  BSP_OPTS="$BSP_OPTS $BSP_BSPMASTER_OPTS"
+elif [ "$COMMAND" = "workermanager" ] ; then
+  CLASS='com.chinamobile.bcbsp.WorkerManagerRunner'
+  BSP_OPTS="$BSP_OPTS $BSP_WORKERMANAGER_OPTS"
+elif [ "$COMMAND" = "job" ] ; then
+  CLASS='com.chinamobile.bcbsp.client.BSPJobClient'
+elif [ "$COMMAND" = "admin" ] ; then
+  CLASS='com.chinamobile.bcbsp.client.BSPJobClient'
+elif [ "$COMMAND" = "help" ] ; then
+  CLASS='com.chinamobile.bcbsp.client.BSPJobClientHelp'
+elif [ "$COMMAND" = "jar" ] ; then
+  CLASS=com.chinamobile.bcbsp.util.RunJar
+  BSP_OPTS="$BSP_OPTS"
+else
+  CLASS=$COMMAND
+fi
+
+# cygwin path translation
+if $cygwin; then
+  CLASSPATH=`cygpath -p -w "$CLASSPATH"`
+  BCBSP_HOME=`cygpath -w "$BCBSP_HOME"`
+  BCBSP_LOG_DIR=`cygpath -w "$BCBSP_LOG_DIR"`
+  TOOL_PATH=`cygpath -p -w "$TOOL_PATH"`
+fi
+
+# cygwin path translation
+if $cygwin; then
+  JAVA_LIBRARY_PATH=`cygpath -p "$JAVA_LIBRARY_PATH"`
+fi
+
+BCBSP_OPTS="$BCBSP_OPTS -Dbcbsp.log.dir=$BCBSP_LOG_DIR"
+BCBSP_OPTS="$BCBSP_OPTS -Dbcbsp.log.file=$BCBSP_LOGFILE"
+BCBSP_OPTS="$BCBSP_OPTS -Dbcbsp.home.dir=$BCBSP_HOME"
+BCBSP_OPTS="$BCBSP_OPTS -Dbcbsp.id.str=$BCBSP_IDENT_STRING"
+BCBSP_OPTS="$BCBSP_OPTS -Dbcbsp.root.logger=${BCBSP_ROOT_LOGGER:-INFO,console}"
+if [ "x$JAVA_LIBRARY_PATH" != "x" ]; then
+  BCBSP_OPTS="$BCBSP_OPTS -Djava.library.path=$JAVA_LIBRARY_PATH"
+fi  
+BCBSP_OPTS="$BCBSP_OPTS -Dbcbsp.policy.file=$BCBSP_POLICYFILE"
+
+# run it
+
+exec "$JAVA" $JAVA_HEAP_MAX $BCBSP_OPTS -classpath "$CLASSPATH" $CLASS "$@"
